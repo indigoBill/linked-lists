@@ -44,6 +44,8 @@ const LinkedList = function(){
         let size = 0;
 
         for(const prop in list){
+            if(prop === 'head' && list['head'] === null) return size;
+
             size++;
         }
 
@@ -69,10 +71,20 @@ const LinkedList = function(){
     }
 
     function pop(){
-        const lastNodeSuffix = Object.values(list).length - 1;
+        if(this.size() === 1){
+            delete list['head'];
+            list['head'] = null;
+        }else{
+            const lastNodeSuffix = Object.values(list).length - 1;
 
-        delete list[`node_${lastNodeSuffix}`];
-        list[`node_${lastNodeSuffix - 1}`]['nextNode'] = null;
+            delete list[`node_${lastNodeSuffix}`];
+
+            if(lastNodeSuffix === 1){
+                list['head']['nextNode'] = null;
+            }else{
+                list[`node_${lastNodeSuffix - 1}`]['nextNode'] = null;
+            }   
+        }
 
         return list;
     }
